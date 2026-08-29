@@ -1,0 +1,215 @@
+{
+  "name": "token-meter",
+  "displayName": "Token Meter - AI Context & Token Budget Visualizer",
+  "description": "Real-time token & context budget analyzer for AI coding assistants. Live status bar, workspace token tree, AI rules inspector, and interactive D3 treemap heatmap.",
+  "version": "0.1.0",
+  "publisher": "token-meter",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/token-meter/token-meter"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "token",
+    "tokenizer",
+    "claude",
+    "gpt-4o",
+    "gemini",
+    "cursorrules",
+    "context",
+    "treemap",
+    "ai",
+    "budget"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "token-meter-container",
+          "title": "Token Meter",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "token-meter-container": [
+        {
+          "id": "tokenMeterTree",
+          "name": "Workspace Token Explorer",
+          "contextualTitle": "Token Explorer"
+        },
+        {
+          "id": "tokenMeterRules",
+          "name": "AI Rules & Skills",
+          "contextualTitle": "AI Rules & Skills"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "tokenMeter.selectModel",
+        "title": "Token Meter: Select Active Tokenizer Model",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "tokenMeter.openTreemap",
+        "title": "Token Meter: Open Interactive Context Treemap",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "tokenMeter.refreshWorkspace",
+        "title": "Token Meter: Refresh Token Counts",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "tokenMeter.filterAll",
+        "title": "Show All Files",
+        "icon": "$(list-flat)"
+      },
+      {
+        "command": "tokenMeter.filterRulesOnly",
+        "title": "Show AI Rules Only",
+        "icon": "$(verified)"
+      },
+      {
+        "command": "tokenMeter.filterOpenTabsOnly",
+        "title": "Show Open Tabs Only",
+        "icon": "$(files)"
+      },
+      {
+        "command": "tokenMeter.openFile",
+        "title": "Open File"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "tokenMeter.selectModel",
+          "when": "view == tokenMeterTree",
+          "group": "navigation@1"
+        },
+        {
+          "command": "tokenMeter.openTreemap",
+          "when": "view == tokenMeterTree",
+          "group": "navigation@2"
+        },
+        {
+          "command": "tokenMeter.refreshWorkspace",
+          "when": "view == tokenMeterTree",
+          "group": "navigation@3"
+        },
+        {
+          "command": "tokenMeter.filterAll",
+          "when": "view == tokenMeterTree",
+          "group": "1_filters@1"
+        },
+        {
+          "command": "tokenMeter.filterRulesOnly",
+          "when": "view == tokenMeterTree",
+          "group": "1_filters@2"
+        },
+        {
+          "command": "tokenMeter.filterOpenTabsOnly",
+          "when": "view == tokenMeterTree",
+          "group": "1_filters@3"
+        },
+        {
+          "command": "tokenMeter.refreshWorkspace",
+          "when": "view == tokenMeterRules",
+          "group": "navigation@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Token Meter",
+      "properties": {
+        "tokenMeter.defaultModel": {
+          "type": "string",
+          "default": "claude-3-7-sonnet",
+          "enum": [
+            "claude-3-7-sonnet",
+            "gpt-4o",
+            "gemini-2-flash",
+            "deepseek-v3"
+          ],
+          "enumDescriptions": [
+            "Anthropic Claude (Claude BPE Tokenizer)",
+            "OpenAI (GPT / o-Series o200k Tokenizer)",
+            "Google Gemini (SentencePiece 256k Tokenizer)",
+            "DeepSeek / Llama (128k BPE Tokenizer)"
+          ],
+          "description": "Active default tokenizer model for token calculations."
+        },
+        "tokenMeter.contextBudget": {
+          "type": "number",
+          "default": 200000,
+          "description": "Target context window budget in tokens (e.g. 128000, 200000, 1000000, 2000000)."
+        },
+        "tokenMeter.statusBarEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show live token counts in the VS Code status bar."
+        },
+        "tokenMeter.excludePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/node_modules/**",
+            "**/.git/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/out/**",
+            "**/.next/**",
+            "**/.nuxt/**",
+            "**/coverage/**",
+            "**/*.min.js",
+            "**/*.min.css",
+            "**/*.map",
+            "**/*.lock",
+            "**/package-lock.json",
+            "**/yarn.lock",
+            "**/pnpm-lock.yaml"
+          ],
+          "description": "Glob patterns to exclude from workspace token calculations."
+        },
+        "tokenMeter.debounceDelay": {
+          "type": "number",
+          "default": 250,
+          "description": "Debounce delay in milliseconds for editor token calculations."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build:prod",
+    "build": "node esbuild.js",
+    "build:prod": "node esbuild.js --production",
+    "watch": "node esbuild.js --watch"
+  },
+  "dependencies": {
+    "d3": "^7.9.0",
+    "gpt-tokenizer": "^2.8.1",
+    "js-tiktoken": "^1.0.18"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.3",
+    "@types/node": "^20.17.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.3"
+  }
+}
