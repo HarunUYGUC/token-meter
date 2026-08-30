@@ -3,30 +3,41 @@
   "displayName": "Token Meter - AI Context & Token Budget Visualizer",
   "description": "Real-time token & context budget analyzer for AI coding assistants. Live status bar, workspace token tree, AI rules inspector, and interactive D3 treemap heatmap.",
   "version": "0.1.0",
-  "publisher": "token-meter",
+  "publisher": "HarunUYGUC",
+  "icon": "media/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/token-meter/token-meter"
+    "url": "https://github.com/HarunUYGUC/token-meter.git"
   },
+  "bugs": {
+    "url": "https://github.com/HarunUYGUC/token-meter/issues"
+  },
+  "homepage": "https://github.com/HarunUYGUC/token-meter#readme",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
   },
   "categories": [
     "Programming Languages",
-    "Other",
-    "Visualization"
+    "Visualization",
+    "Other"
   ],
   "keywords": [
     "token",
     "tokenizer",
+    "token-counter",
+    "context-window",
     "claude",
     "gpt-4o",
     "gemini",
+    "deepseek",
     "cursorrules",
-    "context",
+    "antigravity",
+    "prompt-simulator",
     "treemap",
     "ai",
-    "budget"
+    "budget",
+    "productivity"
   ],
   "activationEvents": [
     "onStartupFinished"
@@ -47,12 +58,14 @@
         {
           "id": "tokenMeterTree",
           "name": "Workspace Token Explorer",
-          "contextualTitle": "Token Explorer"
+          "contextualTitle": "Token Explorer",
+          "icon": "media/icon.svg"
         },
         {
           "id": "tokenMeterRules",
           "name": "AI Rules & Skills",
-          "contextualTitle": "AI Rules & Skills"
+          "contextualTitle": "AI Rules & Skills",
+          "icon": "media/icon.svg"
         }
       ]
     },
@@ -89,7 +102,8 @@
       },
       {
         "command": "tokenMeter.openFile",
-        "title": "Open File"
+        "title": "Open File",
+        "icon": "$(file)"
       }
     ],
     "menus": {

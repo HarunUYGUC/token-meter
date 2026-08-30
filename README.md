@@ -23,12 +23,15 @@ Yapay zeka modelleriyle kod yazarken context boyutu büyüdükçe:
 ## 🚀 Öne Çıkan Özellikler
 
 ### 1. 🗺️ İnteraktif Context Isı Haritası (D3.js Squarified Treemap)
+
+![Context Treemap Overview](media/treemap-overview.png)
+
 * **Görsel Token Dağılımı**: Hangi dosyaların ve klasörlerin en çok bağlam tükettiğini alan büyüklüğüne göre orantılı gösterir.
 * **Renk Yoğunluk Skalası (Token Density Heatmap)**:
   * 🟢 **Yeşil (< 1k)**: Hafif / Güvenli
   * 🟡 **Sarı (1k - 8k)**: Orta Düzey
   * 🟠 **Turuncu (8k - 30k)**: Ağır Dosya
-  * 🔴 **Kırmızı (> 30k)**: Kritik / Dikkat Dağıtıcı (Lost in the Middle riski!)
+  * 🔴 **Kırmızı (> 30k)**: Kritik / Dikkat Dağıtıcı (*Lost in the Middle* riski!)
   * 🟣 **Mor**: AI Kural Dosyaları (`.cursorrules`, `GEMINI.md` vb.)
 * **Derinlemesine Gezinti (Zoom & Breadcrumbs)**: Klasörlere tıklayarak alt dizinleri büyütebilir, ekmek kırıntısı yoluyla geri dönebilirsiniz.
 * **Anında Arama & Editör Entegrasyonu**: Dosya adı arayarak ilgili kutuyu anında bulabilir, tıkladığınızda dosyayı doğrudan VS Code editöründe açabilirsiniz.
@@ -36,6 +39,9 @@ Yapay zeka modelleriyle kod yazarken context boyutu büyüdükçe:
 ---
 
 ### 2. 🎯 İnteraktif Prompt Bütçe Simülatörü (Prompt Simulator)
+
+![Prompt Budget Simulator](media/prompt-simulator.png)
+
 AI'a bir soru sormadan veya büyük bir görev vermeden önce **"Bu görev bana kaç token'a mal olacak?"** senaryosunu test edin:
 * **Canlı Kontrol Listesi (Checklist)**:
   * 📜 **AI Rules**: Projedeki zorunlu kural dosyaları.
@@ -47,6 +53,9 @@ AI'a bir soru sormadan veya büyük bir görev vermeden önce **"Bu görev bana 
 ---
 
 ### 3. 🧠 Ekosisteme Duyarlı Beceri Dedektörü (AI Skills Inspector)
+
+![AI Skills Tooltip & 3-Tiered Breakdown](media/skill-tooltip.png)
+
 Modelinize ve geliştirme ortamınıza kurulu tüm becerileri (skills) otomatik keşfeder ve **3 kademeli token analizi** sunar:
 * **Ekosistem İzolasyonu**:
   * 🔵 **Google Gemini**: `~/.gemini/antigravity/builtin/skills`, `~/.gemini/config/skills`, `.gemini/skills/`
@@ -81,6 +90,9 @@ Farklı AI ailelerinin resmi sözlük (vocabulary) ve BPE algoritmalarıyla kali
 ---
 
 ### 6. 🌲 Workspace Token Ağacı (Token Explorer)
+
+![Workspace Token Explorer & AI Rules](media/sidebar-explorer.png)
+
 * **Kök Klasör & Başlık Sayacı**: Sol panel başlığında canlı toplam sayaç (**`WORKSPACE TOKEN EXPLORER 56.5k`**) ve ağaçta kök klasör (**`🗂️ proje-adi 56.5k`**) hiyerarşisi.
 * **Sıralama**: Dosyaları ve klasörleri en çok token tüketenden en aza doğru listeler.
 * **Filtreler**:
@@ -118,8 +130,18 @@ Farklı AI ailelerinin resmi sözlük (vocabulary) ve BPE algoritmalarıyla kali
     "**/node_modules/**",
     "**/.git/**",
     "**/dist/**",
+    "**/build/**",
+    "**/out/**",
+    "**/.next/**",
+    "**/.nuxt/**",
+    "**/coverage/**",
     "**/*.min.js",
-    "**/package-lock.json"
+    "**/*.min.css",
+    "**/*.map",
+    "**/*.lock",
+    "**/package-lock.json",
+    "**/yarn.lock",
+    "**/pnpm-lock.yaml"
   ]
 }
 ```
