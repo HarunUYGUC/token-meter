@@ -141,7 +141,7 @@ export class TreemapPanel {
         <div class="controls-group">
           <input type="text" id="search-input" class="input-control" placeholder="Search file name..." />
           <select id="model-select" class="select-control"></select>
-          <button id="simulator-toggle-btn" class="btn-primary" title="Open Prompt & Skill Budget Simulator">🎯 Prompt Simulator</button>
+          <button id="simulator-toggle-btn" class="btn-primary" title="Open Prompt Simulator">🎯 Prompt Simulator</button>
           <button id="refresh-btn" class="btn-icon" title="Rescan Workspace">⟳ Refresh</button>
         </div>
       </div>
@@ -175,7 +175,17 @@ export class TreemapPanel {
 
       <div class="budget-meter-panel">
         <div class="meter-stats">
-          <span>Workspace Context: <strong id="stat-total-tokens">0</strong> tokens</span>
+          <div class="meter-context-group">
+            <span class="context-label">Workspace Context:</span>
+            <strong id="stat-total-tokens" class="stat-tokens-val">0</strong> tokens
+            <span id="stat-sim-plus-container" class="stat-sim-tag hidden">
+              <span class="sim-plus-operator">+</span>
+              <span class="sim-tag-icon">Prompt:</span>
+              <strong id="stat-sim-tokens">0</strong>
+              <span class="sim-equals-operator">=</span>
+              <strong id="stat-combined-tokens" class="stat-combined-val">0</strong> Total
+            </span>
+          </div>
           <div class="target-budget-group">
             <label for="budget-select">Target Budget:</label>
             <select id="budget-select" class="budget-select-control">
@@ -194,10 +204,13 @@ export class TreemapPanel {
             <input type="text" id="custom-budget-input" class="custom-budget-input hidden" placeholder="e.g. 50.000, 2M" />
             <button id="custom-budget-apply-btn" class="btn-icon-tiny hidden" title="Apply Custom Budget">✓</button>
           </div>
-          <span>Budget Fill: <strong id="stat-fill-pct">0.0%</strong> <span class="model-cap-hint">(Model Max: <span id="stat-model-max">1M</span>)</span></span>
+          <div class="meter-fill-group">
+            <span>Budget Fill: <strong id="stat-fill-pct">0.0%</strong> <span class="model-cap-hint">(Model Max: <span id="stat-model-max">1M</span>)</span></span>
+          </div>
         </div>
-        <div class="budget-track">
-          <div id="budget-meter-fill" class="budget-fill"></div>
+        <div id="budget-track-container" class="budget-track">
+          <div id="budget-meter-fill-workspace" class="budget-fill-workspace" title="Workspace Code"></div>
+          <div id="budget-meter-fill-sim" class="budget-fill-sim" title="Prompt Overhead (Rules + Skills)"></div>
         </div>
       </div>
 

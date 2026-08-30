@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.2] - 2026-08-30
+
+### 🌟 New Features & Enhancements
+* **Segmented Context Progress Bar**: Multi-colored dual-segment capacity bar visually splitting workspace code (cyan/green) and simulated prompt overhead (purple).
+* **Live Prompt Formula Display**: Real-time context formula in the header (`Workspace Context: 51.3k tokens + Prompt: 15.4k = 66.7k Total`).
+* **Binary Exclusion Fix**: Automatically excludes `.vsix` binary archive packages from workspace token counts.
+* **UI Polish**: Simplified Prompt Simulator button tooltip and updated visual documentation assets.
+
+---
+
 ## [0.1.1] - 2026-08-30
 
 ### 📖 Documentation & Global Release

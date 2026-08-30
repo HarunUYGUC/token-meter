@@ -95,7 +95,8 @@ export const DEFAULT_EXCLUDES = [
   '**/package-lock.json',
   '**/yarn.lock',
   '**/pnpm-lock.yaml',
-  '**/bun.lockb'
+  '**/bun.lockb',
+  '**/*.vsix'
 ];
 
 /**
@@ -103,7 +104,7 @@ export const DEFAULT_EXCLUDES = [
  */
 export const BINARY_EXTENSIONS = new Set([
   'png', 'jpg', 'jpeg', 'gif', 'webp', 'ico', 'svgz', 'bmp', 'tiff', 'psd', 'ai',
-  'zip', 'tar', 'gz', 'bz2', '7z', 'rar', 'iso', 'dmg',
+  'zip', 'tar', 'gz', 'bz2', '7z', 'rar', 'iso', 'dmg', 'vsix',
   'mp4', 'mkv', 'avi', 'mov', 'wmv', 'flv', 'webm',
   'mp3', 'wav', 'flac', 'ogg', 'aac', 'm4a',
   'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx',

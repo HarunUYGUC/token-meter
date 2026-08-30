@@ -288,6 +288,73 @@ function parseTokenString(str: string): number {
   return isNaN(num) ? 0 : num;
 }
 
+let currentEstimatedPrompt = 0;
+
+function updateBudgetMeter(payload: WebviewPayload, simPrompt: number) {
+  currentEstimatedPrompt = simPrompt;
+
+  const totalTokensEl = document.getElementById('stat-total-tokens');
+  const modelMaxEl = document.getElementById('stat-model-max');
+  const fillPctEl = document.getElementById('stat-fill-pct');
+  const simPlusContainer = document.getElementById('stat-sim-plus-container');
+  const simTokensEl = document.getElementById('stat-sim-tokens');
+  const combinedTokensEl = document.getElementById('stat-combined-tokens');
+
+  const meterFillWorkspace = document.getElementById('budget-meter-fill-workspace');
+  const meterFillSim = document.getElementById('budget-meter-fill-sim');
+  const trackContainer = document.getElementById('budget-track-container');
+
+  const workspaceTotal = payload.totalTokens || 0;
+  const combinedTotal = workspaceTotal + simPrompt;
+  const modelMaxLimit = payload.activeModel.contextLimit || 200000;
+
+  const effectiveLimit = activeTargetBudget === 'auto' ? modelMaxLimit : activeTargetBudget;
+  const workspacePct = (workspaceTotal / effectiveLimit) * 100;
+  const simPct = (simPrompt / effectiveLimit) * 100;
+  const combinedPct = (combinedTotal / effectiveLimit) * 100;
+
+  if (totalTokensEl) totalTokensEl.textContent = formatTokenNumber(workspaceTotal);
+  if (modelMaxEl) modelMaxEl.textContent = formatTokenNumber(modelMaxLimit);
+
+  if (simPlusContainer && simTokensEl && combinedTokensEl) {
+    if (simPrompt > 0) {
+      simPlusContainer.classList.remove('hidden');
+      simTokensEl.textContent = formatTokenNumber(simPrompt);
+      combinedTokensEl.textContent = formatTokenNumber(combinedTotal);
+    } else {
+      simPlusContainer.classList.add('hidden');
+    }
+  }
+
+  if (fillPctEl) {
+    fillPctEl.textContent = `${combinedPct.toFixed(1)}%`;
+    if (combinedPct > 100) {
+      fillPctEl.style.color = '#ef4444';
+    } else {
+      fillPctEl.style.color = '#38bdf8';
+    }
+  }
+
+  if (trackContainer) {
+    if (combinedPct > 100) {
+      trackContainer.classList.add('overflow');
+    } else {
+      trackContainer.classList.remove('overflow');
+    }
+  }
+
+  if (meterFillWorkspace) {
+    const wsFillWidth = Math.min(100, workspacePct);
+    meterFillWorkspace.style.width = `${wsFillWidth}%`;
+  }
+
+  if (meterFillSim) {
+    const remainingWidth = Math.max(0, 100 - Math.min(100, workspacePct));
+    const simFillWidth = Math.min(remainingWidth, simPct);
+    meterFillSim.style.width = `${simFillWidth}%`;
+  }
+}
+
 function updateUI(payload: WebviewPayload) {
   // Update model select options
   const modelSelect = document.getElementById('model-select') as HTMLSelectElement;
@@ -302,43 +369,8 @@ function updateUI(payload: WebviewPayload) {
     });
   }
 
-  // Update budget meter bar & target limit
-  const totalTokensEl = document.getElementById('stat-total-tokens');
-  const modelMaxEl = document.getElementById('stat-model-max');
-  const fillPctEl = document.getElementById('stat-fill-pct');
-  const meterFill = document.getElementById('budget-meter-fill');
-
-  const total = payload.totalTokens || 0;
-  const modelMaxLimit = payload.activeModel.contextLimit || 200000;
-  
-  // Calculate effective target limit (Auto model max or User selected limit)
-  const effectiveLimit = activeTargetBudget === 'auto' ? modelMaxLimit : activeTargetBudget;
-  const rawPct = (total / effectiveLimit) * 100;
-  const fillWidth = Math.min(100, rawPct);
-
-  if (totalTokensEl) totalTokensEl.textContent = formatTokenNumber(total);
-  if (modelMaxEl) modelMaxEl.textContent = formatTokenNumber(modelMaxLimit);
-  if (fillPctEl) {
-    fillPctEl.textContent = `${rawPct.toFixed(1)}%`;
-    if (rawPct > 100) {
-      fillPctEl.style.color = '#ef4444';
-    } else {
-      fillPctEl.style.color = '#38bdf8';
-    }
-  }
-
-  if (meterFill) {
-    meterFill.style.width = `${fillWidth}%`;
-    if (rawPct < 40) {
-      meterFill.style.backgroundColor = '#10b981'; // green
-    } else if (rawPct < 75) {
-      meterFill.style.backgroundColor = '#eab308'; // yellow
-    } else if (rawPct <= 100) {
-      meterFill.style.backgroundColor = '#f97316'; // orange
-    } else {
-      meterFill.style.backgroundColor = '#ef4444'; // red / overflow
-    }
-  }
+  // Update segmented budget meter bar & target limit
+  updateBudgetMeter(payload, currentEstimatedPrompt);
 
   // Render Treemap
   if (visualizer && payload.hierarchy && payload.hierarchy.length > 0) {
@@ -473,6 +505,9 @@ function calculateSimulatorTotal(payload: WebviewPayload) {
   if (simSkillsTokensEl) simSkillsTokensEl.textContent = formatTokenNumber(totalSkills + indexOverhead);
   if (simTotalTokensEl) simTotalTokensEl.textContent = formatTokenNumber(estimatedPrompt);
   if (simBudgetPctEl) simBudgetPctEl.textContent = `(${pct.toFixed(2)}% of ${formatTokenNumber(limit)})`;
+
+  // Update top segmented budget meter bar in real-time
+  updateBudgetMeter(payload, estimatedPrompt);
 }
 
 function renderBreadcrumbs(pathNodes: TreemapNodeData[], container: HTMLElement | null) {
