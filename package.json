@@ -1,5 +1,5 @@
 {
-  "name": "token-meter",
+  "name": "token-meter-ai",
   "displayName": "Token Meter - AI Context & Token Budget Visualizer",
   "description": "Real-time token & context budget analyzer for AI coding assistants. Live status bar, workspace token tree, AI rules inspector, and interactive D3 treemap heatmap.",
   "version": "0.1.0",
