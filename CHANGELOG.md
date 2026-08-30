@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.1] - 2026-08-30
+
+### 📖 Documentation & Global Release
+* **English Overview Documentation**: Translated full `README.md` to fluent English for the global Visual Studio Marketplace audience.
+* **Rich Media Previews**: Embedded high-resolution screenshots for Context Treemap, Prompt Simulator, AI Skills Inspector, and Workspace Token Explorer.
+
+---
+
 ## [0.1.0] - 2026-08-30
 
 ### 🚀 Initial Release
