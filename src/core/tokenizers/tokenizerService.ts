@@ -1,4 +1,5 @@
-let vscode: any;
+import type * as vscodeType from 'vscode';
+let vscode: typeof vscodeType | undefined;
 try {
   vscode = require('vscode');
 } catch {}
@@ -30,7 +31,7 @@ export class TokenizerService {
 
   private constructor() {
     try {
-      if (typeof vscode !== 'undefined' && vscode.EventEmitter) {
+      if (typeof vscode !== 'undefined' && vscode?.EventEmitter) {
         this._onDidChangeActiveModel = new vscode.EventEmitter<ModelMetadata>();
         this.onDidChangeActiveModel = this._onDidChangeActiveModel.event;
       } else {
@@ -51,9 +52,9 @@ export class TokenizerService {
 
     // Load initial model from VS Code configuration if set
     try {
-      if (typeof vscode !== 'undefined' && vscode.workspace && vscode.workspace.getConfiguration) {
+      if (typeof vscode !== 'undefined' && vscode?.workspace?.getConfiguration) {
         const config = vscode.workspace.getConfiguration('tokenMeter');
-        const defaultModel = config.get<string>('defaultModel', DEFAULT_MODEL_ID);
+        const defaultModel = (config.get('defaultModel', DEFAULT_MODEL_ID) || DEFAULT_MODEL_ID) as string;
         if (this.tokenizers.has(defaultModel)) {
           this.activeModelId = defaultModel;
         }

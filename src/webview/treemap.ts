@@ -97,7 +97,7 @@ export class TreemapVisualizer {
     const displayData = this.currentPathNodes[this.currentPathNodes.length - 1];
 
     // Create D3 Hierarchy
-    const hierarchy = d3
+    const root = d3
       .hierarchy<TreemapNodeData>(displayData)
       .sum(d => (!d.isDirectory ? Math.max(d.tokens, 1) : 0))
       .sort((a, b) => (b.value || 0) - (a.value || 0));
@@ -112,7 +112,7 @@ export class TreemapVisualizer {
       .round(true)
       .tile(d3.treemapSquarify.ratio(1));
 
-    treemapLayout(hierarchy);
+    const hierarchy = treemapLayout(root);
 
     // SVG Container
     const svg = d3

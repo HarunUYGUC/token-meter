@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ES2022",
     "target": "ES2022",
     "lib": ["ES2022", "DOM"],
     "sourceMap": true,
@@ -12,7 +12,8 @@
     "noUnusedParameters": false,
     "noUnusedLocals": false,
     "skipLibCheck": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "bundler"
   },
   "include": ["src/**/*"]
 }
